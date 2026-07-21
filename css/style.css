@@ -1,0 +1,424 @@
+/* =========================
+   RESET
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+    background:#f4f7fb;
+    color:#333;
+    line-height:1.7;
+
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+nav{
+
+    background:#003366;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px 8%;
+
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+}
+
+.logo{
+
+    color:white;
+    font-size:26px;
+    font-weight:700;
+
+}
+
+.nav-links{
+
+    list-style:none;
+    display:flex;
+    gap:30px;
+
+}
+
+.nav-links a{
+
+    color:white;
+    text-decoration:none;
+    font-weight:500;
+    transition:.3s;
+
+}
+
+.nav-links a:hover{
+
+    color:#ffcc33;
+
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+
+    background:linear-gradient(135deg,#003366,#0073bb);
+
+    color:white;
+
+    padding:90px 20px;
+
+    text-align:center;
+
+}
+
+.hero-content{
+
+    max-width:900px;
+    margin:auto;
+
+}
+
+.profile-image{
+
+    width:180px;
+    height:180px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:6px solid white;
+
+    margin-bottom:30px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+
+}
+
+.hero h1{
+
+    font-size:58px;
+
+    margin-bottom:10px;
+
+}
+
+.hero h2{
+
+    font-size:28px;
+
+    color:#e7e7e7;
+
+    margin-bottom:25px;
+
+}
+
+.hero p{
+
+    font-size:20px;
+
+    max-width:700px;
+
+    margin:auto;
+
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.hero-buttons{
+
+    margin-top:40px;
+
+}
+
+.btn{
+
+    display:inline-block;
+
+    padding:15px 35px;
+
+    background:#ffcc33;
+
+    color:#003366;
+
+    border-radius:8px;
+
+    font-weight:bold;
+
+    text-decoration:none;
+
+    margin:10px;
+
+    transition:.3s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-3px);
+
+    background:#ffb300;
+
+}
+
+.btn-outline{
+
+    background:transparent;
+
+    border:2px solid white;
+
+    color:white;
+
+}
+
+.btn-outline:hover{
+
+    background:white;
+
+    color:#003366;
+
+}
+
+/* =========================
+   MAIN
+========================= */
+
+main{
+
+    width:90%;
+
+    max-width:1100px;
+
+    margin:60px auto;
+
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+
+    background:white;
+
+    padding:35px;
+
+    margin-bottom:35px;
+
+    border-radius:15px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.card h2{
+
+    color:#0073bb;
+
+    margin-bottom:20px;
+
+}
+
+/* =========================
+   SKILLS
+========================= */
+
+.skills{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+}
+
+.skills span{
+
+    background:#0073bb;
+
+    color:white;
+
+    padding:10px 18px;
+
+    border-radius:25px;
+
+    transition:.3s;
+
+}
+
+.skills span:hover{
+
+    background:#003366;
+
+    transform:scale(1.05);
+
+}
+
+/* =========================
+   PROJECTS
+========================= */
+
+.project-card{
+
+    border-left:6px solid #0073bb;
+
+    background:#f8fbff;
+
+    padding:25px;
+
+    border-radius:10px;
+
+    margin-top:25px;
+
+}
+
+.project-card h3{
+
+    color:#003366;
+
+    margin-bottom:15px;
+
+}
+
+.project-card p{
+
+    margin-bottom:10px;
+
+}
+
+/* =========================
+   LISTS
+========================= */
+
+ul{
+
+    padding-left:20px;
+
+}
+
+li{
+
+    margin-bottom:12px;
+
+}
+
+/* =========================
+   LINKS
+========================= */
+
+a{
+
+    color:#0073bb;
+
+}
+
+a:hover{
+
+    color:#003366;
+
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+
+    background:#003366;
+
+    color:white;
+
+    text-align:center;
+
+    padding:25px;
+
+    margin-top:60px;
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+nav{
+
+    flex-direction:column;
+
+    padding:20px;
+
+}
+
+.nav-links{
+
+    flex-direction:column;
+
+    margin-top:15px;
+
+    gap:15px;
+
+}
+
+.hero h1{
+
+    font-size:38px;
+
+}
+
+.hero h2{
+
+    font-size:22px;
+
+}
+
+.hero p{
+
+    font-size:16px;
+
+}
+
+.profile-image{
+
+    width:140px;
+
+    height:140px;
+
+}
+
+.btn{
+
+    display:block;
+
+    width:220px;
+
+    margin:15px auto;
+
+}
+
+main{
+
+    width:95%;
+
+}
+
+}
