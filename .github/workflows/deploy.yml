@@ -1,0 +1,40 @@
+name: Deploy Portfolio
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    name: Deploy Website
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::836550977947:role/GitHubActionsPortfolioDeployRole
+          aws-region: ap-south-1
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: Upload website to private S3 bucket
+        run: |
+          aws s3 cp index.html s3://aws-static-portfolio-836550977947/index.html
+          aws s3 sync css/ s3://aws-static-portfolio-836550977947/css/
+          aws s3 sync images/ s3://aws-static-portfolio-836550977947/images/
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id E1LDL7YC06WR8Z \
+            --paths "/*"

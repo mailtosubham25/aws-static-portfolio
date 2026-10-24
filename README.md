@@ -48,14 +48,10 @@ This project demonstrates how to deploy a static website on AWS using Amazon S3.
 
 ```text
 aws-static-portfolio/
-│
-├── architecture/
 ├── css/
 │   └── style.css
 ├── images/
 │   └── Profile.png
-├── screenshots/
-├── websites/
 ├── index.html
 └── README.md
 ```
