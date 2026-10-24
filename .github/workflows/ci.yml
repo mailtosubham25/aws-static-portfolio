@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - feature/portfolio-implementation
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate HTML
+        uses: Cyb3r-Jak3/html5validator-action@v0.6.0
+        with:
+          root: .
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Format Check
+        run: terraform -chdir=infrastructure/environments/prod fmt -check
+
+      - name: Terraform Init
+        run: terraform -chdir=infrastructure/environments/prod init -backend=false
+
+      - name: Terraform Validate
+        run: terraform -chdir=infrastructure/environments/prod validate
