@@ -7,14 +7,14 @@ on:
   push:
     branches:
       - main
-      - feature/portfolio-implementation
+      - "feature/**"
 
 permissions:
   contents: read
 
 jobs:
   validate:
-    name: Validate Project
+    name: Validate and Scan Project
     runs-on: ubuntu-latest
 
     steps:
@@ -32,3 +32,32 @@ jobs:
 
       - name: Terraform Validate
         run: terraform -chdir=infrastructure/environments/prod validate
+
+      - name: Checkov Terraform Security Scan
+        uses: bridgecrewio/checkov-action@v12.1347.0
+        with:
+          directory: infrastructure/environments/prod
+          framework: terraform
+          output_format: cli
+          soft_fail: true
+
+      - name: Trivy Infrastructure Scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          version: v0.76.2
+          scan-type: config
+          scan-ref: infrastructure/environments/prod
+          severity: HIGH,CRITICAL
+          format: table
+          exit-code: '0'
+
+      - name: Trivy Secret Scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          version: v0.76.2
+          scan-type: fs
+          scan-ref: .
+          scanners: secret
+          severity: HIGH,CRITICAL
+          format: table
+          exit-code: '0'
