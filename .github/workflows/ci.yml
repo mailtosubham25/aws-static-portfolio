@@ -33,14 +33,16 @@ jobs:
       - name: Terraform Validate
         run: terraform -chdir=infrastructure/environments/prod validate
 
-      - name: Checkov Terraform Security Scan
-        uses: bridgecrewio/checkov-action@v12.1347.0
+      - name: Set up Python for Checkov
+        uses: actions/setup-python@v5
         with:
-          directory: infrastructure/environments/prod
-          framework: terraform
-          output_format: cli
-          soft_fail: true
+          python-version: "3.12"
 
+      - name: Install Checkov
+        run: python -m pip install --upgrade pip && python -m pip install checkov==3.4.6
+
+      - name: Checkov Terraform Security Scan
+        run: checkov --directory infrastructure/environments/prod --framework terraform --output cli --soft-fail
       - name: Trivy Infrastructure Scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
