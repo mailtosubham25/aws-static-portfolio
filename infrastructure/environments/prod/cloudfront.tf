@@ -18,10 +18,11 @@ resource "aws_cloudfront_distribution" "portfolio" {
   }
 
   default_cache_behavior {
-    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
-    cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = "s3-${aws_s3_bucket.portfolio.id}"
-    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods            = ["GET", "HEAD", "OPTIONS"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = "s3-${aws_s3_bucket.portfolio.id}"
+    response_headers_policy_id = "67f7725c-6f97-4210-82d7-5512b31e9d03"
+    viewer_protocol_policy     = "redirect-to-https"
 
     forwarded_values {
       query_string = false
@@ -61,7 +62,7 @@ data "aws_iam_policy_document" "portfolio_cloudfront_access" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
-      values   = [aws_cloudfront_distribution.portfolio.arn]
+      values   = ["arn:aws:cloudfront::836550977947:distribution/E1LDL7YC06WR8Z"]
     }
   }
 }
