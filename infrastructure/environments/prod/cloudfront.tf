@@ -1,3 +1,7 @@
+data "aws_cloudfront_response_headers_policy" "security_headers" {
+  id = "67f7725c-6f97-4210-82d7-5512b31e9d03"
+}
+
 resource "aws_cloudfront_origin_access_control" "portfolio" {
   name                              = "${local.project_name}-oac"
   description                       = "Origin Access Control for the private portfolio S3 bucket"
@@ -21,7 +25,7 @@ resource "aws_cloudfront_distribution" "portfolio" {
     allowed_methods            = ["GET", "HEAD", "OPTIONS"]
     cached_methods             = ["GET", "HEAD"]
     target_origin_id           = "s3-${aws_s3_bucket.portfolio.id}"
-    response_headers_policy_id = "67f7725c-6f97-4210-82d7-5512b31e9d03"
+    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.security_headers.id
     viewer_protocol_policy     = "redirect-to-https"
 
     forwarded_values {
