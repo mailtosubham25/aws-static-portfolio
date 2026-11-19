@@ -1,8 +1,8 @@
 # Security review and remediation register
 
-**Reviewed:** 2026-11-19  
-**Scope:** PR #2, branch `feature/security-scanning`, scan run [#13](https://github.com/mailtosubham25/aws-static-portfolio/actions/runs/44630708951)  
-**Scan result:** Checkov 3.4.6 — 30 passed, 12 failed. Trivy config scan — two HIGH findings; Trivy secret scan — no issues detected.
+**Reviewed:** 2026-11-20  
+**Scope:** PR #2, branch `feature/security-scanning`, commit `6a2871f0dee034fb786389113712aa7696960202`, scan run [#17](https://github.com/mailtosubham25/aws-static-portfolio/actions/runs/44637467202)  
+**Scan result:** Checkov 3.4.6 — 31 passed, 12 failed. Trivy config scan — two HIGH findings (AWS-0011 and AWS-0132); Trivy secret scan — no issues detected. GitHub Actions run #17 completed successfully; the scans remain report-only.
 
 This register reflects the Terraform in the reviewed branch: a static portfolio served from a private, versioned S3 bucket through one CloudFront distribution and OAC. S3 public access block is fully enabled, objects use SSE-S3 (AES256), CloudFront redirects viewers to HTTPS, and the AWS-managed SecurityHeadersPolicy is attached. There is no configured backend, upload/event-processing workflow, second origin, custom domain certificate, or stated regional disaster-recovery objective.
 
@@ -20,11 +20,12 @@ A scanner **failure** means the configuration does not meet that rule's policy. 
 | `CKV2_AWS_62` FAILED — S3 event notifications | No event-driven processing or user upload path is configured. Notifications have no current consumer. | **Exception.** Do not add notifications without a defined workflow and destination. | SNS/SQS/Lambda destinations can add request charges, permissions, retries, and operational monitoring. | An upload, processing, alerting, or other event consumer is added. |
 | `CKV_AWS_144` FAILED — S3 cross-region replication | No cross-region recovery target or recovery-point objective is stated. Replication improves regional recovery only when paired with a tested recovery plan. | **Defer.** Define recovery objectives before implementing replication. | Duplicate storage, inter-region transfer, version retention, replication roles, and recovery testing. | A regional disaster-recovery objective is approved. |
 | `CKV_AWS_145` FAILED; Trivy `AWS-0132` HIGH — customer-managed KMS key | Current S3 encryption is enabled with SSE-S3 (AES256); objects are not unencrypted. These findings request customer-managed key control, rotation, policy, and auditability beyond AWS-managed encryption. | **Defer / documented policy exception.** Keep SSE-S3 unless data classification, compliance, or key-control needs require SSE-KMS. | KMS key and request charges, key-policy administration, and rotation/access review. | Data classification or compliance requirements mandate customer-managed keys. |
-| `CKV2_AWS_61` FAILED — S3 lifecycle configuration | A lifecycle policy can control current and noncurrent version growth. Versioning is enabled, so old asset versions may accumulate; deleting them too aggressively could remove useful rollback history. | **Defer, then fix with an approved retention period.** Set lifecycle rules only after choosing how long noncurrent versions must remain. | Can reduce long-term storage; requires policy setup and review to avoid premature deletion. | A rollback-retention period is agreed or version storage grows materially. |
+| `CKV2_AWS_61` PASSED — S3 lifecycle configuration | The lifecycle policy is implemented. It expires noncurrent object versions after 90 days and removes expired delete markers when they become eligible. Current object versions are not expired by these rules. | **Implemented.** The previous lifecycle deferral is closed for noncurrent-version retention and eligible expired-delete-marker cleanup. | Can reduce long-term storage of old versions; current versions remain available under this policy. | Revisit if rollback-retention needs or lifecycle rules change. |
+| `CKV_AWS_300` FAILED — abort incomplete S3 multipart uploads | The policy check expects a lifecycle rule to abort incomplete multipart uploads. No upload or multipart-upload workflow is configured for this static portfolio. Incomplete multipart uploads can retain billable parts if such uploads occur. | **Exception for current design.** Revisit if an upload workflow or multipart writes are introduced; then set an appropriate abort period. | No added service cost while no multipart uploads occur; a rule would require choosing and maintaining a cleanup period. | Add an uploader or use multipart writes to this bucket. |
 
 ## Current passing controls
 
-The latest Checkov run passed `CKV2_AWS_32` (CloudFront response headers policy), `CKV_AWS_21` (S3 versioning), and `CKV_AWS_19` (encryption at rest), among its 30 passing checks. The Trivy secret scan reported no detected secrets.
+The latest Checkov run passed `CKV2_AWS_32` (CloudFront response headers policy), `CKV_AWS_21` (S3 versioning), `CKV_AWS_19` (encryption at rest), and `CKV2_AWS_61` (S3 lifecycle configuration), among its 31 passing checks. The Trivy secret scan reported no detected secrets.
 
 ## Follow-up
 
