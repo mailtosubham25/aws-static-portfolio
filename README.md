@@ -59,7 +59,7 @@ See the [security review and remediation register](docs/security-review.md) for 
 css/                           Stylesheet
 docs/deployment.md             Provisioning and publishing instructions
 docs/security-review.md        Findings, exceptions, and review triggers
-images/                        Profile photo and homepage screenshot
+images/                        Profile photo
 index.html                     Portfolio content
 infrastructure/                Terraform for S3 and CloudFront
 ~~~
