@@ -1,0 +1,7 @@
+# Accepted WAF exception for a static portfolio with no application/API backend.
+# Review by 2027-02-20; enable WAF sooner if abuse or dynamic endpoints are introduced.
+AWS-0011 exp:2027-02-20
+
+# Accepted SSE-S3 exception: the bucket is encrypted; CMK control is not currently required.
+# Review by 2027-02-20 or earlier if data classification/compliance requirements change.
+AWS-0132 exp:2027-02-20
